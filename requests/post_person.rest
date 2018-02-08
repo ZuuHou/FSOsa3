@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Pikku Tuominen",
+    "number": "097766677",
+    "id": "3"
+}
