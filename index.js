@@ -38,9 +38,19 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-    const maxId = persons.length > 0 ? persons.map(person => person.id).sort().reverse()[0] : 0
     const person = req.body
-    person.id = maxId + 1
+    person.id = Math.floor((Math.random() * 1000000) + 1)
+
+    if (person.name === "") {
+        res.status(202).send({ error: 'No name given' })
+    }
+    if (person.number === "") {
+        res.status(202).send({ error: 'No number given' })
+    }
+    const existingPerson = persons.find(p => p.name === person.name)
+    if (existingPerson) {
+        res.status(202).send({ error: 'Name exists' })
+    }
 
     persons = persons.concat(person)
     res.json(person)
