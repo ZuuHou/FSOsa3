@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/ZuuHou/FSOsa3#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.14.12"
