@@ -30,6 +30,10 @@ let persons = [
     }
 ]
 
+app.get('/', (req, res) => {
+res.send('<p>Täähän toimii</p>')
+})
+
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
@@ -76,6 +80,7 @@ app.get('/info', (req, res) => {
     )
 })
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
