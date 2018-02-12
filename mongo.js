@@ -16,7 +16,4 @@ const person = new Person({
 
 person
     .save()
-    .then(response => {
-        console.log('person saved!')
-        mongoose.connection.close()
-    })
+    .then(mongoose.connection.close())

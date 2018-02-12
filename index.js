@@ -14,19 +14,11 @@ morgan.token('data', function (res, req) {
 })
 app.use(morgan(':method :url :data :status :res[content-length] - :response-time ms'))
 
-const formatPerson = (person) => {
-    return {
-        name: person.name,
-        number: person.number,
-        id: person._id
-    }
-}
-
 app.get('/api/persons', (req, res) => {
     Person
         .find({})
         .then(persons => {
-            res.json(persons.map(formatPerson))
+            res.json(persons.map(Person.format))
         })
 })
 
@@ -35,7 +27,7 @@ app.get('/api/persons/:id', (req, res) => {
         .findById(req.params.id)
         .then(person => {
             if (person) {
-                res.json(formatPerson(person))
+                res.json(Person.format(person))
             } else {
                 res.status(404).end()
             }
@@ -50,9 +42,8 @@ app.get('/api/persons/:id', (req, res) => {
 app.delete('/api/persons/:id', (req, res) => {
     Person
         .findByIdAndRemove(req.params.id)
-        .then(result => {
-            res.status(204).end()
-        })
+        .then(res.status(204).end()
+        )
         .catch(error => {
             console.log(error)
             res.status(400).send({ error: 'malformatted id' })
@@ -62,10 +53,10 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
     const body = req.body
 
-    if (body.name === "") {
+    if (body.name === '') {
         res.status(400).send({ error: 'No name given' })
     }
-    if (body.number === "") {
+    if (body.number === '') {
         res.status(400).send({ error: 'No number given' })
     }
 
@@ -74,7 +65,7 @@ app.post('/api/persons', (req, res) => {
         number: body.number
     })
     Person
-        .find( { name: person.name })
+        .find({ name: person.name })
         .then(result => {
             if (result.length > 0) {
                 res.status(400).send({ error: 'Existing name' })
@@ -82,7 +73,7 @@ app.post('/api/persons', (req, res) => {
                 person
                     .save()
                     .then(savedPerson => {
-                        res.json(formatPerson(savedPerson))
+                        res.json(Person.format(savedPerson))
                     })
                     .catch(error => {
                         console.log(error)
@@ -103,7 +94,7 @@ app.put('/api/persons/:id', (req, res) => {
     Person
         .findByIdAndUpdate(req.params.id, person, { new: true })
         .then(updatedPerson => {
-            res.json(formatPerson(updatedPerson))
+            res.json(Person.format(updatedPerson))
         })
         .catch(error => {
             console.log(error)
